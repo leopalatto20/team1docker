@@ -1,0 +1,17 @@
+[
+  {
+    "Texto": "4+5+6-2",
+    "NumNivel": 1,
+    "Respuesta": "13"
+  },
+  {
+    "Texto": "45*3",
+    "NumNivel": 1,
+    "Respuesta": "135"
+  },
+  {
+    "Texto": "224/2",
+    "NumNivel": 1,
+    "Respuesta": "112"
+  }
+]

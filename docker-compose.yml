@@ -1,0 +1,31 @@
+services:
+  db:
+    image: mysql:8.0
+    volumes:
+      - videojuego-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: Videojuego
+
+  backend:
+    build:
+      context: ./BackEnd
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ./BackEnd/server:/app/server
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./FrontEnd
+      dockerfile: Dockerfile
+    ports:
+      - 5173:80
+    depends_on:
+      - backend
+
+volumes:
+  videojuego-mysql-data:

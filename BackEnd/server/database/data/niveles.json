@@ -1,0 +1,17 @@
+[
+  {
+    "NumNivel": 1,
+    "NumPreguntas": 3,
+    "Descripcion": "Busqueda de candados."
+  },
+  {
+    "NumNivel": 2,
+    "NumPreguntas": 3,
+    "Descripcion": "Completa la pared."
+  },
+  {
+    "NumNivel": 3,
+    "NumPreguntas": 4,
+    "Descripcion": "Balancea la cafeteria."
+  }
+]
