@@ -1,6 +1,6 @@
 services:
   db:
-    image: mysql:8.0
+    image: mysql:8.3-oraclelinux8
     volumes:
       - videojuego-mysql-data:/var/lib/mysql
     environment:

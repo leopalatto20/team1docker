@@ -24,7 +24,9 @@ const Admin: React.FC = () => {
   const [mostrandoFormularioAlumno, setMostrandoFormularioAlumno] = useState(false);
   const [mostrandoFormularioPregunta, setMostrandoFormularioPregunta] = useState(false);
 
+  const alumnoInicial = { NumLista: 0, Genero: "", Grupo: "" };
   const [nuevoAlumno, setNuevoAlumno] = useState({ NumLista: 0, Genero: "", Grupo: "" });
+  const preguntaInicial = { Texto: "", Respuesta: "" };
   const [nuevaPregunta, setNuevaPregunta] = useState({ Texto: "", Respuesta: "" });
 
   const fetchAlumnos = async () => {
@@ -60,7 +62,7 @@ const Admin: React.FC = () => {
   const agregarAlumno = async () => {
     const IDMaestro = localStorage.getItem("IDMaestro");
     const Grupo = localStorage.getItem("Grupo");
-  
+
     // Validación
     if (
       !nuevoAlumno.NumLista ||
@@ -71,22 +73,23 @@ const Admin: React.FC = () => {
       alert("Por favor completa todos los campos para agregar un alumno.");
       return;
     }
-  
+
     try {
       const formData = new FormData();
       formData.append("NumLista", nuevoAlumno.NumLista.toString());
       formData.append("Genero", nuevoAlumno.Genero);
       formData.append("Grupo", Grupo);
       formData.append("IDMaestro", IDMaestro);
-  
+
       await axios.post("http://localhost:8000/alumno/agregar", formData);
       fetchAlumnos();
+      setNuevoAlumno(alumnoInicial)
       setMostrandoFormularioAlumno(false);
     } catch (err) {
       console.error("Error al agregar alumno:", err);
     }
   };
-  
+
 
   const fetchPreguntas = async () => {
     try {
@@ -146,20 +149,21 @@ const Admin: React.FC = () => {
       alert("Por favor completa el texto y la respuesta de la pregunta.");
       return;
     }
-  
+
     try {
       const formData = new FormData();
       formData.append("Texto", nuevaPregunta.Texto);
       formData.append("Respuesta", nuevaPregunta.Respuesta);
-  
+
       await axios.post("http://localhost:8000/pregunta/agregar", formData);
       fetchPreguntas();
+      setNuevaPregunta(preguntaInicial);
       setMostrandoFormularioPregunta(false);
     } catch (err) {
       console.error("Error al agregar pregunta:", err);
     }
   };
-  
+
 
   const eliminarSesiones = async () => {
     const Grupo = localStorage.getItem('Grupo');
@@ -281,7 +285,10 @@ const Admin: React.FC = () => {
                   Guardar
                 </button>
                 <button
-                  onClick={() => setMostrandoFormularioAlumno(false)}
+                  onClick={() =>  {
+                    setMostrandoFormularioAlumno(false);
+                    setNuevoAlumno(alumnoInicial);
+                  }}
                   className="bg-red-400 text-white py-2 px-4 rounded hover:bg-red-600 w-full"
                 >
                   Cancelar
@@ -352,7 +359,10 @@ const Admin: React.FC = () => {
                   Guardar
                 </button>
                 <button
-                  onClick={() => setMostrandoFormularioPregunta(false)}
+                  onClick={() =>  {
+                    setMostrandoFormularioPregunta(false);
+                    setNuevaPregunta(preguntaInicial);
+                  }}
                   className="bg-red-400 text-white py-2 px-4 rounded hover:bg-red-600 w-full"
                 >
                   Cancelar

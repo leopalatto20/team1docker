@@ -1,18 +1,7 @@
-import pymysql
-from pymysql.cursors import DictCursor
-
-
-def get_connection():
-    return pymysql.connect(
-        host="db",
-        user="root",
-        password="root",
-        cursorclass=DictCursor,
-    )
-
+from server.database.get_connection import get_base_connection
 
 def init_db(sql_path):
-    connection = get_connection()
+    connection = get_base_connection()
     try:
         with connection.cursor() as cursor:
             with open(sql_path, "r") as file:

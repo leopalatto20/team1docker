@@ -16,7 +16,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
    * y si no se muestra una alerta*/
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const success = await onLogin(correo, grupo);
+    const success = await onLogin(correo, grupo.toUpperCase());
     if (success) {
       navigate('/dashboard');
     } else {
@@ -60,7 +60,7 @@ const Login: React.FC<Props> = ({ onLogin }) => {
           className={`text-2xl font-bold mb-6 text-center ${darkMode ? 'text-yellow-400' : 'text-[#3A557C]'
             }`}
         >
-          Operacion Escape
+          Operación Escape
         </h2>
 
         <div className="mb-4">

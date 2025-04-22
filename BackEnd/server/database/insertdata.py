@@ -1,16 +1,5 @@
-import pymysql
-from pymysql.cursors import DictCursor
 import json
-
-
-def get_connection():
-    return pymysql.connect(
-        host="db",
-        user="root",
-        password="root",
-        database="Videojuego",
-        cursorclass=DictCursor,
-    )
+from server.database.get_connection import get_connection
 
 
 def insert_data(maestros_path, niveles_path, preguntas_path):

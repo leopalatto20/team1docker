@@ -1,69 +1,9 @@
-from fastapi import FastAPI, HTTPException, Form
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-import pymysql
-from pymysql.cursors import DictCursor
+from fastapi import HTTPException, Form
 import uvicorn
 from datetime import datetime
-from contextlib import asynccontextmanager
-from server.database.initdb import init_db
-from server.database.insertdata import insert_data
-from server.wait_for_sql import wait_for_sql
-
-
-# conexión a la base de datos
-def get_connection():
-    return pymysql.connect(
-        host="db",
-        user="root",
-        password="root",
-        database="Videojuego",
-        cursorclass=DictCursor,
-    )
-
-
-"""Para dockerizar, el servidor de mysql y el de fastapi se levantan al mismo tiempo
-entonces no se pueden mandar queries luego luego, entonces se tiene que hacer una funcion
-de waitForMysql, que manda conexiones a mysql hasta que se acepten, cuando eso pase ya se
-pueden ejecutar los otros scripts, tambien tenemos que crear el usuario team1 dentro del
-script de sql para que este script y el de insertData sirvan bien"""
-
-
-"""asynccontextmanager Define las acciones que se hacen en el lifespan del servidor
-Yield define el estado en el que el servidor esta corriendo, lo de
-antes de yield es lo que se hace antes de levantar el servidor y lo
-que esta despues se hace antes de cerrarlo"""
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    print("Iniciando la base de datos")
-    wait_for_sql()
-    init_db("./server/database/script/setup.sql")
-    insert_data(
-        "./server/database/data/maestros.json",
-        "./server/database/data/niveles.json",
-        "./server/database/data/preguntas.json",
-    )
-    yield
-    print("Cerrando la aplicacion")
-
-
-app = FastAPI(lifespan=lifespan)
-
-origins = ["*"]
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-
-class MaestroLogin(BaseModel):
-    Correo: str
-    Grupo: str
+from server.models import MaestroLogin
+from server.config import app
+from server.database.get_connection import get_connection
 
 
 @app.post("/alumno/login")
